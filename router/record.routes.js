@@ -1,12 +1,12 @@
 const express = require("express");
-const { getRecord } = require("../controllers/record");
+const { getRecord } = require("../cntrollers/record");
 
 
 const router = express.Router()
 
 router.get("/", async (req,res) => {
     const {username}  = req.body;
-    const record = await getRecord(username);
+    const record = await getRecord(username) ;
     res.send(record);
 })
 

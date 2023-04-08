@@ -1,15 +1,13 @@
 var express = require("express");
 var dotenv = require("dotenv")
 var mongoose = require("mongoose");
-// import { localVerify, passportConfig, signupUser } from "./router/auth.js";
-const auth = require("./services/auth")
-const signupUser = require("./services/auth")
 var passport = require("passport");
 const authRouter = require("./router/auth.routes");
 const recordRouter = require("./router/record.routes");
+const cookieParser = require("cookie-parser");
 
-const { migragateRecord } = require("./services/record");
-var session = require("express-session")
+var session = require("express-session");
+const { passportConfig } = require("./cntrollers/auth");
 /* -------------------------------------------------------------------------- */
 /*                                 Env Config                                 */
 /* -------------------------------------------------------------------------- */
@@ -37,7 +35,8 @@ function initExpress() {
     }));
     app.use(passport.initialize());
     app.use(passport.session());    
-    auth.passportConfig();
+    app.use(cookieParser());
+    passportConfig();
 
     /* --------------------------------- Router --------------------------------- */
     app.use("/auth",authRouter);
