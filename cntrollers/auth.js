@@ -13,10 +13,11 @@ function passportConfig() {
 }
 
 async function loginUser(req,res) {
+    console.log(`request: ${JSON.stringify(req.body)}`);
     const{username,password} = req.body;
     const localAuth = User.userModel.authenticate();
     localAuth(username,password,(err,result) => {
-        if(err){res.status(400).send(err); process.exit(1)}
+        if(err){res.status(400).send(err);}
         if(result){
             console.log(`login success`);
             console.log(result);
@@ -25,10 +26,11 @@ async function loginUser(req,res) {
                 httpOnly: true,
                 maxAge: 60 * 60
             };
+            const {_id,dcId,email,username,serverList,...otherDetails} = result;
             res.cookie("jwt",token,tokenOption);
-            res.json({result,token})
+            res.status(200).json({user:{_id,email,username,serverList,dcId}})
         } 
-        else { res.status(400)}
+        else { res.status(400).json({message:"invalid username or password"})}
     });  
 }
 

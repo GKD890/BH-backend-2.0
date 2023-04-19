@@ -5,6 +5,7 @@ var passport = require("passport");
 const authRouter = require("./router/auth.routes");
 const recordRouter = require("./router/record.routes");
 const cookieParser = require("cookie-parser");
+var cors = require("cors");
 
 var session = require("express-session");
 const { passportConfig } = require("./cntrollers/auth");
@@ -22,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 /*                               Express Config                               */
 /* -------------------------------------------------------------------------- */
 const app = express()
-app.use(express.urlencoded({extended: true}) );
+app.use(express.urlencoded({extended: false}) );
 
 function initExpress() {
     app.get("/",(res,req) => {
@@ -33,6 +34,7 @@ function initExpress() {
       resave: false,
       saveUninitialized: false
     }));
+    app.use(cors());
     app.use(passport.initialize());
     app.use(passport.session());    
     app.use(cookieParser());
